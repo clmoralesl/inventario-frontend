@@ -8,6 +8,7 @@ import Inicio from './components/Inicio';
 import Movimientos from './components/Movimientos';
 import ProductosRegistrados from './components/ProductosRegistrados'; 
 import ListaProductosStockBajo from './components/ListaProductosStockBajo';
+import ListadoLotes from './components/ListadoLotes';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="movimientos" element={<Movimientos />} />
           <Route path="registrados" element={<ProductosRegistrados />} /> 
           <Route path="stock-bajo" element={<ListaProductosStockBajo />} />
+          <Route path="lotes" element={<ListadoLotes />} />
         </Route>
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>

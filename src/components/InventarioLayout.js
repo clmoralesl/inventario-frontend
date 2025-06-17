@@ -137,25 +137,6 @@ function InventarioLayout() {
 
 
           <ListItem disablePadding>
-            <ListItemButton
-              component={Link}
-              to="/inventario/movimientos"
-              selected={isActive('/inventario/movimientos')}
-            >
-              <img
-                src={arrow}
-                alt="Movimientos"
-                width={24}
-                height={24}
-                style={{ marginRight: 5, verticalAlign: 'middle' }}
-              />
-              <ListItemText primary="Movimientos" />
-              
-            </ListItemButton>      
-          </ListItem>
-
-
-          <ListItem disablePadding>
             <ListItemButton onClick={handleLoteClick}>
               <img
                 src={cajaLote}
@@ -193,6 +174,24 @@ function InventarioLayout() {
               </ListItem>
             </List>
           </Collapse>
+
+          <ListItem disablePadding>
+            <ListItemButton
+              component={Link}
+              to="/inventario/movimientos"
+              selected={isActive('/inventario/movimientos')}
+            >
+              <img
+                src={arrow}
+                alt="Movimientos"
+                width={24}
+                height={24}
+                style={{ marginRight: 5, verticalAlign: 'middle' }}
+              />
+              <ListItemText primary="Movimientos" />
+              
+            </ListItemButton>      
+          </ListItem>
 
 
 
