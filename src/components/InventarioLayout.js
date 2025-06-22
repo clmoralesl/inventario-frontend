@@ -18,6 +18,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import cajaPng from '../assets/1370329.png';
 import arrow from '../assets/mov.png';
+import cajaLote from '../assets/lotePNG.png';
 import HomeIcon from '@mui/icons-material/Home';
 
 const drawerWidth = 230;
@@ -26,6 +27,8 @@ function InventarioLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = React.useState(true);
+  const [openLote, setOpenLote] = React.useState(true);
+
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -35,6 +38,10 @@ function InventarioLayout() {
 
   const handleMenuClick = () => {
     setOpenMenu((prev) => !prev);
+  };
+
+  const handleLoteClick = () => {
+    setOpenLote((prev) => !prev);
   };
 
   // Helper para saber si la ruta está activa
@@ -128,6 +135,46 @@ function InventarioLayout() {
             </List>
           </Collapse>
 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleLoteClick}>
+              <img
+                src={cajaLote}
+                alt="Lotes"
+                width={24}
+                height={24}
+                style={{ marginRight: 8, verticalAlign: 'middle' }}
+              />
+              <ListItemText primary="Lotes" />
+              {openLote ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+          </ListItem>
+
+          <Collapse in={openLote} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/inventario/lotes"
+                  selected={isActive('/inventario/lotes')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText primary="Listar Lotes" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/inventario/lotes/agregar"
+                  selected={isActive('/inventario/lotes/agregar')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText primary="Agregar Lote" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Collapse>
+
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
@@ -143,8 +190,13 @@ function InventarioLayout() {
               />
               <ListItemText primary="Movimientos" />
               
-            </ListItemButton>
+            </ListItemButton>      
           </ListItem>
+
+
+
+
+          
         </List>
         <Divider sx={{ my: 2 }} />
         <Box sx={{ p: 2 }}>
