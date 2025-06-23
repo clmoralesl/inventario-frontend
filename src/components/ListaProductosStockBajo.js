@@ -16,7 +16,7 @@ function ListaProductosStockBajo() {
 
   return (
     <Paper sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Productos con Bajo Stock
       </Typography>
       <TableContainer>

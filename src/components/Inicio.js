@@ -12,7 +12,7 @@ function Inicio() {
         Bienvenido al Inventario Barlacteo
       </Typography>
       <Paper elevation={4} sx={{ mt: 6, p: 4 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom  sx={{ fontSize: '3rem' }}>
           Métricas del último mes
         </Typography>
         <Box sx={{ display: 'flex', gap: 3, mt: 3 }}>
