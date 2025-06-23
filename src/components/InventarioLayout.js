@@ -18,10 +18,12 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import cajaPng from '../assets/1370329.png';
 import arrow from '../assets/mov.png';
+import tag from '../assets/tag.png';
+import logo from '../assets/Logo2.png';
 import cajaLote from '../assets/lotePNG.png';
 import HomeIcon from '@mui/icons-material/Home';
 
-const drawerWidth = 230;
+const drawerWidth = 270;
 
 function InventarioLayout() {
   const location = useLocation();
@@ -48,23 +50,31 @@ function InventarioLayout() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'  }}>
       <Drawer
         variant="permanent"
         open
-        sx={{
+        sx={{          
           width: drawerWidth,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
-        <Toolbar>
+        <Toolbar sx = {{ color: 'contrastText'}}>
+          <img
+                src={logo}
+                alt="Icono Bar Lacteo"
+                width={48}
+                height={48}
+                style={{ marginLeft: -20,marginRight: 12, verticalAlign: 'left' }}
+              />
           <Typography variant="h6" noWrap component="div">
             Inventario Barlacteo
           </Typography>
+          
         </Toolbar>
         <Divider />
-        <List>
+        <List >
           {/* Botón para ir a Inicio */}
           <ListItem disablePadding>
             <ListItemButton
@@ -74,6 +84,23 @@ function InventarioLayout() {
             >
               <HomeIcon sx={{ mr: 1 }} />
               <ListItemText primary="Inicio" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              
+              component={Link}
+              to="/inventario/categorias"
+              selected={isActive('/inventario/categorias')}
+            >
+              <img
+                src={tag}
+                alt="Categorías"
+                width={24}
+                height={24}
+                style={{ marginRight: 8, verticalAlign: 'middle' }}
+              />
+              <ListItemText primary="Categorías" />
             </ListItemButton>
           </ListItem>
 
