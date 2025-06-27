@@ -170,13 +170,16 @@ function RegistrarLote() {
                     <TextField
                         fullWidth
                         name="fechaVencimiento"
-                        label="Fecha de Vencimiento"
-                        type="date"
+                        label="Fecha de Vencimiento (dd-mm-yyyy)"
+                        placeholder="Ej: 25-12-2025"
+                        type="text"
                         value={formData.fechaVencimiento}
                         onChange={handleChange}
                         error={!!errors.fechaVencimiento}
-                        helperText={errors.fechaVencimiento}
-                        InputLabelProps={{ shrink: true }}
+                        helperText={
+                            errors.fechaVencimiento ||
+                            'Ingrese la fecha en formato dd-mm-yyyy'
+                        }
                         size="small"
                     />
 
