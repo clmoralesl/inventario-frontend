@@ -192,8 +192,8 @@ function InventarioLayout() {
               <ListItem disablePadding>
                 <ListItemButton
                   component={Link}
-                  to="/inventario/lotes/agregar"
-                  selected={isActive('/inventario/lotes/agregar')}
+                  to="/inventario/lotes/registrarLote"
+                  selected={isActive('/inventario/lotes/registrarLote')}
                   sx={{ pl: 4 }}
                 >
                   <ListItemText primary="Agregar Lote" />
