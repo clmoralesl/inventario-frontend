@@ -1,5 +1,5 @@
-import React from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Drawer,
   List,
@@ -10,18 +10,19 @@ import {
   Button,
   Divider,
   ListItemButton,
-  Typography
-} from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import cajaPng from '../assets/1370329.png';
-import arrow from '../assets/mov.png';
-import tag from '../assets/tag.png';
-import logo from '../assets/Logo2.png';
-import cajaLote from '../assets/lotePNG.png';
-import HomeIcon from '@mui/icons-material/Home';
+  Typography,
+} from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import cajaPng from "../assets/1370329.png";
+import arrow from "../assets/mov.png";
+import tag from "../assets/tag.png";
+import logo from "../assets/Logo2.png";
+import cajaLote from "../assets/lotePNG.png";
+import HomeIcon from "@mui/icons-material/Home";
+import iconoProveedor from "../assets/IconoProveedores.webp";
 
 const drawerWidth = 270;
 
@@ -31,11 +32,10 @@ function InventarioLayout() {
   const [openMenu, setOpenMenu] = React.useState(true);
   const [openLote, setOpenLote] = React.useState(true);
 
-
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
-    navigate('/login');
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+    navigate("/login");
   };
 
   const handleMenuClick = () => {
@@ -50,37 +50,39 @@ function InventarioLayout() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <Box sx={{ display: 'flex'  }}>
+    <Box sx={{ display: "flex" }}>
       <Drawer
         variant="permanent"
         open
-        sx={{          
+        sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
         }}
       >
-        <Toolbar sx = {{ color: 'contrastText'}}>
+        <Toolbar sx={{ color: "contrastText" }}>
           <img
-                src={logo}
-                alt="Icono Bar Lacteo"
-                width={48}
-                height={48}
-                style={{ marginLeft: -20,marginRight: 12, verticalAlign: 'left' }}
-              />
+            src={logo}
+            alt="Icono Bar Lacteo"
+            width={48}
+            height={48}
+            style={{ marginLeft: -20, marginRight: 12, verticalAlign: "left" }}
+          />
           <Typography variant="h6" noWrap component="div">
             Inventario Barlacteo
           </Typography>
-          
         </Toolbar>
         <Divider />
-        <List >
+        <List>
           {/* Botón para ir a Inicio */}
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
               to="/inventario"
-              selected={isActive('/inventario')}
+              selected={isActive("/inventario")}
             >
               <HomeIcon sx={{ mr: 1 }} />
               <ListItemText primary="Inicio" />
@@ -88,19 +90,36 @@ function InventarioLayout() {
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton
-              
               component={Link}
               to="/inventario/categorias"
-              selected={isActive('/inventario/categorias')}
+              selected={isActive("/inventario/categorias")}
             >
               <img
                 src={tag}
                 alt="Categorías"
                 width={24}
                 height={24}
-                style={{ marginRight: 8, verticalAlign: 'middle' }}
+                style={{ marginRight: 8, verticalAlign: "middle" }}
               />
               <ListItemText primary="Categorías" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton
+              component={Link}
+              to="/inventario/proveedores"
+              selected={isActive("/inventario/proveedores")}
+            >
+            
+              <img
+                src={iconoProveedor} 
+                alt="Proveedores"
+                width={24}
+                height={24}
+                style={{ marginRight: 8, verticalAlign: "middle" }}
+              />
+              <ListItemText primary="Proveedores" />
             </ListItemButton>
           </ListItem>
 
@@ -111,7 +130,7 @@ function InventarioLayout() {
                 alt="Productos"
                 width={24}
                 height={24}
-                style={{ marginRight: 8, verticalAlign: 'middle' }}
+                style={{ marginRight: 8, verticalAlign: "middle" }}
               />
               <ListItemText primary="Productos" />
               {openMenu ? <ExpandLess /> : <ExpandMore />}
@@ -123,7 +142,7 @@ function InventarioLayout() {
                 <ListItemButton
                   component={Link}
                   to="/inventario/listado"
-                  selected={isActive('/inventario/listado')}
+                  selected={isActive("/inventario/listado")}
                   sx={{ pl: 4 }}
                 >
                   <ListItemText primary="Listado de Productos" />
@@ -133,17 +152,18 @@ function InventarioLayout() {
                 <ListItemButton
                   component={Link}
                   to="/inventario/agregar"
-                  selected={isActive('/inventario/agregar')}
+                  selected={isActive("/inventario/agregar")}
                   sx={{ pl: 4 }}
                 >
-                  <ListItemText primary="Registrar Producto" /> {/* Cambiado aquí */}
+                  <ListItemText primary="Registrar Producto" />{" "}
+                  {/* Cambiado aquí */}
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton
                   component={Link}
                   to="/inventario/registrados"
-                  selected={isActive('/inventario/registrados')}
+                  selected={isActive("/inventario/registrados")}
                   sx={{ pl: 4 }}
                 >
                   <ListItemText primary="Productos Registrados" />
@@ -153,7 +173,7 @@ function InventarioLayout() {
                 <ListItemButton
                   component={Link}
                   to="/inventario/stock-bajo"
-                  selected={isActive('/inventario/stock-bajo')}
+                  selected={isActive("/inventario/stock-bajo")}
                   sx={{ pl: 4 }}
                 >
                   <ListItemText primary="Productos con bajo stock" />
@@ -162,7 +182,6 @@ function InventarioLayout() {
             </List>
           </Collapse>
 
-
           <ListItem disablePadding>
             <ListItemButton onClick={handleLoteClick}>
               <img
@@ -170,7 +189,7 @@ function InventarioLayout() {
                 alt="Lotes"
                 width={24}
                 height={24}
-                style={{ marginRight: 8, verticalAlign: 'middle' }}
+                style={{ marginRight: 8, verticalAlign: "middle" }}
               />
               <ListItemText primary="Lotes" />
               {openLote ? <ExpandLess /> : <ExpandMore />}
@@ -183,7 +202,7 @@ function InventarioLayout() {
                 <ListItemButton
                   component={Link}
                   to="/inventario/lotes"
-                  selected={isActive('/inventario/lotes')}
+                  selected={isActive("/inventario/lotes")}
                   sx={{ pl: 4 }}
                 >
                   <ListItemText primary="Listar Lotes" />
@@ -193,7 +212,7 @@ function InventarioLayout() {
                 <ListItemButton
                   component={Link}
                   to="/inventario/lotes/registrarLote"
-                  selected={isActive('/inventario/lotes/registrarLote')}
+                  selected={isActive("/inventario/lotes/registrarLote")}
                   sx={{ pl: 4 }}
                 >
                   <ListItemText primary="Agregar Lote" />
@@ -206,24 +225,18 @@ function InventarioLayout() {
             <ListItemButton
               component={Link}
               to="/inventario/movimientos"
-              selected={isActive('/inventario/movimientos')}
+              selected={isActive("/inventario/movimientos")}
             >
               <img
                 src={arrow}
                 alt="Movimientos"
                 width={24}
                 height={24}
-                style={{ marginRight: 5, verticalAlign: 'middle' }}
+                style={{ marginRight: 5, verticalAlign: "middle" }}
               />
               <ListItemText primary="Movimientos" />
-              
-            </ListItemButton>      
+            </ListItemButton>
           </ListItem>
-
-
-
-
-          
         </List>
         <Divider sx={{ my: 2 }} />
         <Box sx={{ p: 2 }}>

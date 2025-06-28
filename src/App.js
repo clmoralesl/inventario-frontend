@@ -14,6 +14,7 @@ import ListaProductosStockBajo from './components/ListaProductosStockBajo';
 import ListadoLotes from './components/ListadoLotes';
 import Categorias from './components/CategoriasRegistradas';
 import RegistrarLote from './components/RegistrarLote';
+import GestionProveedores from './components/GestionProveedores';
 
 import theme from './theme'; // Import your custom theme
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="lotes" element={<ListadoLotes />} />
             <Route path="categorias" element={<Categorias />} />
             <Route path="lotes/registrarLote" element={<RegistrarLote />} />
+            <Route path="proveedores" element={<GestionProveedores />} />
           </Route>
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
