@@ -9,6 +9,10 @@ import {
     FormControl,
     Select,
     InputLabel,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from "@mui/material";
 import axiosInstance from "./axiosInstance";
 
@@ -17,48 +21,28 @@ function RegistrarLote() {
     const [proveedores, setProveedores] = useState([]);
     const [formData, setFormData] = useState({
         codigoBarra: "",
-        NumeroLote: "",
+        numeroLote: "",
         stockLote: "",
         fechaVencimiento: "",
-        idProveedor: "", // Cadena vacía para consistencia
+        idProveedor: "",
     });
     const [errors, setErrors] = useState({});
+    const [openSuccess, setOpenSuccess] = useState(false);
 
     useEffect(() => {
         axiosInstance
             .get("/producto")
-            .then((res) => {
-                console.log("Productos:", res.data);
-                setProductos(res.data);
-            })
+            .then((res) => setProductos(res.data))
             .catch((err) => console.error("Error al obtener productos:", err));
 
         axiosInstance
             .get("/proveedor")
-            .then((res) => {
-                console.log("Proveedores crudos:", res.data);
-                res.data.forEach((prov, index) => {
-                    console.log(`Proveedor ${index}:`, prov);
-                });
-                setProveedores(res.data);
-            })
-            .catch((err) => {
-                console.error("Error al obtener proveedores:", err);
-                console.error("Detalles del error:", err.response);
-            });
+            .then((res) => setProveedores(res.data))
+            .catch((err) => console.error("Error al obtener proveedores:", err));
     }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(
-            "Cambio:",
-            name,
-            value,
-            "Proveedor seleccionado:",
-            name === "idProveedor"
-                ? proveedores.find((p) => String(p.id) === value)
-                : null
-        );
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -68,11 +52,25 @@ function RegistrarLote() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Validación simple
-        if (!formData.codigoBarra || !formData.idProveedor) {
-            alert("Por favor seleccione un producto y un proveedor.");
+        // Validación frontend
+        const newErrors = {};
+        if (!formData.codigoBarra)
+            newErrors.codigoBarra = "Debe seleccionar un producto";
+        if (!formData.numeroLote)
+            newErrors.numeroLote = "El número de lote es obligatorio";
+        if (!formData.stockLote)
+            newErrors.stockLote = "El stock es obligatorio";
+        if (!formData.fechaVencimiento)
+            newErrors.fechaVencimiento = "La fecha de vencimiento es obligatoria";
+        if (!formData.idProveedor)
+            newErrors.idProveedor = "Debe seleccionar un proveedor";
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
+
+        setErrors({}); // Se limpian los errores sin todo está OK
 
         const payload = {
             numeroLote: formData.numeroLote,
@@ -82,14 +80,14 @@ function RegistrarLote() {
                 codigoBarra: formData.codigoBarra,
             },
             proveedor: {
-                id: parseInt(formData.idProveedor), // Ajustado para 'id'
+                id: parseInt(formData.idProveedor),
             },
         };
 
         axiosInstance
             .post("/lote/registrar", payload)
             .then(() => {
-                alert("Lote registrado correctamente");
+                setOpenSuccess(true);
                 setFormData({
                     codigoBarra: "",
                     numeroLote: "",
@@ -97,7 +95,6 @@ function RegistrarLote() {
                     fechaVencimiento: "",
                     idProveedor: "",
                 });
-                setErrors({});
             })
             .catch((error) => {
                 if (error.response && error.response.status === 400) {
@@ -108,6 +105,10 @@ function RegistrarLote() {
             });
     };
 
+    const handleCloseSuccess = () => {
+        setOpenSuccess(false);
+    };
+
     return (
         <>
             <Typography variant="h5" gutterBottom>
@@ -116,14 +117,13 @@ function RegistrarLote() {
             <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600 }}>
                 <Stack spacing={2}>
                     {/* Código de Barra */}
-                    <FormControl fullWidth size="small">
+                    <FormControl fullWidth size="small" error={!!errors.codigoBarra}>
                         <InputLabel>Código de Barra</InputLabel>
                         <Select
                             name="codigoBarra"
                             value={formData.codigoBarra}
                             label="Código de Barra"
                             onChange={handleChange}
-                            error={!!errors.codigoBarra}
                         >
                             <MenuItem value="">
                                 <em>Seleccione un producto</em>
@@ -177,21 +177,19 @@ function RegistrarLote() {
                         onChange={handleChange}
                         error={!!errors.fechaVencimiento}
                         helperText={
-                            errors.fechaVencimiento ||
-                            'Ingrese la fecha en formato dd-mm-yyyy'
+                            errors.fechaVencimiento || "Ingrese la fecha en formato dd-mm-yyyy"
                         }
                         size="small"
                     />
 
                     {/* Proveedor */}
-                    <FormControl fullWidth size="small">
+                    <FormControl fullWidth size="small" error={!!errors.idProveedor}>
                         <InputLabel>Proveedor</InputLabel>
                         <Select
                             name="idProveedor"
                             value={formData.idProveedor}
                             label="Proveedor"
                             onChange={handleChange}
-                            error={!!errors.idProveedor}
                         >
                             <MenuItem value="">
                                 <em>Seleccione un proveedor</em>
@@ -221,6 +219,21 @@ function RegistrarLote() {
                     </Box>
                 </Stack>
             </Box>
+
+            {/* Diálogo de éxito */}
+            <Dialog open={openSuccess} onClose={handleCloseSuccess} maxWidth="xs" fullWidth>
+                <DialogTitle>Lote Registrado</DialogTitle>
+                <DialogContent>
+                    <Typography color="success.main">
+                        El lote fue registrado exitosamente.
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseSuccess} variant="contained" color="primary">
+                        Cerrar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }
