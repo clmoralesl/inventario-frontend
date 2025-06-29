@@ -1,3 +1,4 @@
+/* Reset básico y tipografía */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,8 +6,53 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: transparent;
+  overflow: hidden;
+  height: 100vh;
 }
 
+/* Fondo login (canvas animado via React) */
+body.login-background {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Fondo degradado app (dentro del sistema) */
+body.app-background {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  min-height: 100vh;
+  overflow: auto;
+}
+
+/* Inputs login - fondo blanco translúcido y texto negro para legibilidad */
+body.login-background .MuiInputBase-root {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-radius: 4px;
+  color: #000 !important;
+}
+
+body.login-background .MuiInputLabel-root {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+body.login-background .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+body.login-background .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2 !important;
+}
+
+/* Inputs dentro del sistema */
+.MuiInputBase-root {
+  color: black;
+}
+
+.MuiInputLabel-root {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Fuente para etiquetas code */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

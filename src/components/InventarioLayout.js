@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Drawer,
@@ -11,11 +11,12 @@ import {
   Divider,
   ListItemButton,
   Typography,
+  Collapse,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
+
 import cajaPng from "../assets/1370329.png";
 import arrow from "../assets/mov.png";
 import tag from "../assets/tag.png";
@@ -46,8 +47,17 @@ function InventarioLayout() {
     setOpenLote((prev) => !prev);
   };
 
-  // Helper para saber si la ruta está activa
   const isActive = (path) => location.pathname === path;
+
+  // ✅ Aplica fondo degradado solo cuando se monta el layout
+  useEffect(() => {
+    document.body.classList.add("app-background");
+    document.body.classList.remove("login-background");
+
+    return () => {
+      document.body.classList.remove("app-background");
+    };
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -63,21 +73,20 @@ function InventarioLayout() {
           },
         }}
       >
-        <Toolbar sx={{ color: "contrastText" }}>
+        <Toolbar>
           <img
             src={logo}
             alt="Icono Bar Lacteo"
             width={48}
             height={48}
-            style={{ marginLeft: -20, marginRight: 12, verticalAlign: "left" }}
+            style={{ marginLeft: -20, marginRight: 12 }}
           />
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap>
             Inventario Barlacteo
           </Typography>
         </Toolbar>
         <Divider />
         <List>
-          {/* Botón para ir a Inicio */}
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
@@ -88,19 +97,14 @@ function InventarioLayout() {
               <ListItemText primary="Inicio" />
             </ListItemButton>
           </ListItem>
+
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
               to="/inventario/categorias"
               selected={isActive("/inventario/categorias")}
             >
-              <img
-                src={tag}
-                alt="Categorías"
-                width={24}
-                height={24}
-                style={{ marginRight: 8, verticalAlign: "middle" }}
-              />
+              <img src={tag} alt="Categorías" width={24} height={24} style={{ marginRight: 8 }} />
               <ListItemText primary="Categorías" />
             </ListItemButton>
           </ListItem>
@@ -111,13 +115,12 @@ function InventarioLayout() {
               to="/inventario/proveedores"
               selected={isActive("/inventario/proveedores")}
             >
-            
               <img
-                src={iconoProveedor} 
+                src={iconoProveedor}
                 alt="Proveedores"
                 width={24}
                 height={24}
-                style={{ marginRight: 8, verticalAlign: "middle" }}
+                style={{ marginRight: 8 }}
               />
               <ListItemText primary="Proveedores" />
             </ListItemButton>
@@ -125,13 +128,7 @@ function InventarioLayout() {
 
           <ListItem disablePadding>
             <ListItemButton onClick={handleMenuClick}>
-              <img
-                src={cajaPng}
-                alt="Productos"
-                width={24}
-                height={24}
-                style={{ marginRight: 8, verticalAlign: "middle" }}
-              />
+              <img src={cajaPng} alt="Productos" width={24} height={24} style={{ marginRight: 8 }} />
               <ListItemText primary="Productos" />
               {openMenu ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
@@ -155,8 +152,7 @@ function InventarioLayout() {
                   selected={isActive("/inventario/agregar")}
                   sx={{ pl: 4 }}
                 >
-                  <ListItemText primary="Registrar Producto" />{" "}
-                  {/* Cambiado aquí */}
+                  <ListItemText primary="Registrar Producto" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -184,18 +180,11 @@ function InventarioLayout() {
 
           <ListItem disablePadding>
             <ListItemButton onClick={handleLoteClick}>
-              <img
-                src={cajaLote}
-                alt="Lotes"
-                width={24}
-                height={24}
-                style={{ marginRight: 8, verticalAlign: "middle" }}
-              />
+              <img src={cajaLote} alt="Lotes" width={24} height={24} style={{ marginRight: 8 }} />
               <ListItemText primary="Lotes" />
               {openLote ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
           </ListItem>
-
           <Collapse in={openLote} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <ListItem disablePadding>
@@ -227,13 +216,7 @@ function InventarioLayout() {
               to="/inventario/movimientos"
               selected={isActive("/inventario/movimientos")}
             >
-              <img
-                src={arrow}
-                alt="Movimientos"
-                width={24}
-                height={24}
-                style={{ marginRight: 5, verticalAlign: "middle" }}
-              />
+              <img src={arrow} alt="Movimientos" width={24} height={24} style={{ marginRight: 5 }} />
               <ListItemText primary="Movimientos" />
             </ListItemButton>
           </ListItem>
