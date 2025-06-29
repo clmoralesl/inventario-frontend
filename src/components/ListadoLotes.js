@@ -56,14 +56,14 @@ function ListadoLotes() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedLotes.map((lote) => (
+            {paginatedLotes.map((lote, index) => (
               <TableRow key={lote.idLote}>
                 <TableCell>{lote.idLote}</TableCell>
                 <TableCell>{lote.producto?.codigoBarra}</TableCell>
                 <TableCell>{lote.numeroLote}</TableCell>
                 <TableCell>{lote.stockLote}</TableCell>
                 <TableCell>{lote.fechaVencimiento}</TableCell>
-                <TableCell>{"EN DESARROLLO"}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>{lote.proveedor?.nombreProveedor}</TableCell>
               </TableRow>
             ))}
