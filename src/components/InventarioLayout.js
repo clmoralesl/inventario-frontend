@@ -82,7 +82,7 @@ function InventarioLayout() {
               width: drawerWidth,
               boxSizing: "border-box",
               borderRadius: 3,
-              boxShadow: "none", // ya lo tiene el contenedor padre
+              boxShadow: "none",
               bgcolor: "transparent",
               position: "relative",
               left: 0,
@@ -264,7 +264,7 @@ function InventarioLayout() {
             </ListItem>
           </List>
           <Divider sx={{ my: 2 }} />
-          <Box sx={{ p: 2 }}>
+          <Box sx={{ p: 2, mt: "auto" }}>
             <Button
               variant="outlined"
               color="error"
@@ -287,10 +287,20 @@ function InventarioLayout() {
           pr: 1,
           pb: 3,
           pl: 0,
-          ml: 3, // para separar del drawer que tiene margen
+          ml: 3,
         }}
       >
-        <Outlet />
+        <Box
+          sx={{
+            backgroundColor: "#fff",
+            borderRadius: 3,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            p: 3,
+            m: 2,
+          }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

@@ -54,23 +54,19 @@ function RegistrarLote() {
 
         // Validación frontend
         const newErrors = {};
-        if (!formData.codigoBarra)
-            newErrors.codigoBarra = "Debe seleccionar un producto";
-        if (!formData.numeroLote)
-            newErrors.numeroLote = "El número de lote es obligatorio";
-        if (!formData.stockLote)
-            newErrors.stockLote = "El stock es obligatorio";
+        if (!formData.codigoBarra) newErrors.codigoBarra = "Debe seleccionar un producto";
+        if (!formData.numeroLote) newErrors.numeroLote = "El número de lote es obligatorio";
+        if (!formData.stockLote) newErrors.stockLote = "El stock es obligatorio";
         if (!formData.fechaVencimiento)
             newErrors.fechaVencimiento = "La fecha de vencimiento es obligatoria";
-        if (!formData.idProveedor)
-            newErrors.idProveedor = "Debe seleccionar un proveedor";
+        if (!formData.idProveedor) newErrors.idProveedor = "Debe seleccionar un proveedor";
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
 
-        setErrors({}); // Se limpian los errores sin todo está OK
+        setErrors({}); // Limpia errores si todo está OK
 
         const payload = {
             numeroLote: formData.numeroLote,
@@ -114,7 +110,15 @@ function RegistrarLote() {
             <Typography variant="h5" gutterBottom>
                 Registrar Lote
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600 }}>
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                    maxWidth: 600,
+                    position: "relative", // Para posicionar el botón abajo a la derecha
+                    paddingBottom: "72px", // Espacio para que el botón no tape inputs
+                }}
+            >
                 <Stack spacing={2}>
                     {/* Código de Barra */}
                     <FormControl fullWidth size="small" error={!!errors.codigoBarra}>
@@ -210,23 +214,27 @@ function RegistrarLote() {
                             </Typography>
                         )}
                     </FormControl>
-
-                    {/* Botón */}
-                    <Box sx={{ textAlign: "right" }}>
-                        <Button type="submit" variant="contained" color="primary">
-                            Registrar Lote
-                        </Button>
-                    </Box>
                 </Stack>
+
+                {/* Botón en la esquina inferior derecha */}
+                <Box
+                    sx={{
+                        position: "absolute",
+                        bottom: 16,
+                        right: 16,
+                    }}
+                >
+                    <Button type="submit" variant="contained" color="primary">
+                        Registrar Lote
+                    </Button>
+                </Box>
             </Box>
 
             {/* Diálogo de éxito */}
             <Dialog open={openSuccess} onClose={handleCloseSuccess} maxWidth="xs" fullWidth>
                 <DialogTitle>Lote Registrado</DialogTitle>
                 <DialogContent>
-                    <Typography color="success.main">
-                        El lote fue registrado exitosamente.
-                    </Typography>
+                    <Typography color="success.main">El lote fue registrado exitosamente.</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseSuccess} variant="contained" color="primary">
