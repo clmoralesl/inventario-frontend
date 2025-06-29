@@ -11,17 +11,32 @@ body {
   height: 100vh;
 }
 
-/* Fondo login (canvas animado via React) */
+/* Fondo login (canvas animado vía React) */
 body.login-background {
   height: 100vh;
   overflow: hidden;
 }
 
-/* Fondo degradado app (dentro del sistema) */
+/* Fondo degradado animado para el sistema (app) */
 body.app-background {
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  background: linear-gradient(-45deg, #ffcc00, #ffe7be, #fff8dc, #fdf5e6);
+  background-size: 400% 400%;
+  animation: gradientMoveApp 20s ease infinite;
   min-height: 100vh;
   overflow: auto;
+}
+
+/* Animación del degradado */
+@keyframes gradientMoveApp {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Inputs login - fondo blanco translúcido y texto negro para legibilidad */
