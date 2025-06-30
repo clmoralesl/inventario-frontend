@@ -34,13 +34,11 @@ function GestionProveedores() {
         direccionProveedor: "",
     });
 
-    // Nuevo estado para confirmación de eliminación
+    const [erroresCampos, setErroresCampos] = useState({});
+
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
     const [proveedorAEliminar, setProveedorAEliminar] = useState(null);
 
-    // Estados para diálogos de error y éxito
-    const [openError, setOpenError] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
     const [openSuccessAdd, setOpenSuccessAdd] = useState(false);
     const [openSuccessEdit, setOpenSuccessEdit] = useState(false);
 
@@ -71,6 +69,7 @@ function GestionProveedores() {
                 direccionProveedor: "",
             });
         }
+        setErroresCampos({});
         setOpenDialog(true);
     };
 
@@ -82,6 +81,22 @@ function GestionProveedores() {
     };
 
     const handleSubmit = () => {
+        const errores = {};
+
+        if (!proveedorActual.rutProveedor) errores.rutProveedor = "Este campo es obligatorio";
+        if (!proveedorActual.dvProveedor) errores.dvProveedor = "Este campo es obligatorio";
+        if (!proveedorActual.nombreProveedor) errores.nombreProveedor = "Este campo es obligatorio";
+        if (!proveedorActual.telefonoProveedor) errores.telefonoProveedor = "Este campo es obligatorio";
+        if (!proveedorActual.emailProveedor) errores.emailProveedor = "Este campo es obligatorio";
+        if (!proveedorActual.direccionProveedor) errores.direccionProveedor = "Este campo es obligatorio";
+
+        if (Object.keys(errores).length > 0) {
+            setErroresCampos(errores);
+            return;
+        }
+
+        setErroresCampos({});
+
         const method = modoEdicion ? axiosInstance.put : axiosInstance.post;
         const url = modoEdicion ? `/proveedor/${proveedorActual.id}` : "/proveedor";
 
@@ -92,18 +107,15 @@ function GestionProveedores() {
                 modoEdicion ? setOpenSuccessEdit(true) : setOpenSuccessAdd(true);
             })
             .catch((err) => {
-                setErrorMsg(err.response?.data || err.message);
-                setOpenError(true);
+                console.error(err);
             });
     };
 
-    // Función para abrir el diálogo de confirmación de eliminación
     const handleOpenConfirmDelete = (proveedor) => {
         setProveedorAEliminar(proveedor);
         setOpenConfirmDelete(true);
     };
 
-    // Función que confirma la eliminación
     const handleConfirmDelete = () => {
         axiosInstance
             .delete(`/proveedor/${proveedorAEliminar.id}`)
@@ -113,14 +125,12 @@ function GestionProveedores() {
                 setProveedorAEliminar(null);
             })
             .catch((err) => {
-                setErrorMsg(err.response?.data || err.message);
-                setOpenError(true);
+                console.error(err);
                 setOpenConfirmDelete(false);
                 setProveedorAEliminar(null);
             });
     };
 
-    // Cancela la eliminación
     const handleCancelDelete = () => {
         setOpenConfirmDelete(false);
         setProveedorAEliminar(null);
@@ -182,7 +192,6 @@ function GestionProveedores() {
                 </Table>
             </TableContainer>
 
-            {/* Diálogo para agregar o editar */}
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>
                     {modoEdicion ? "Editar Proveedor" : "Agregar Proveedor"}
@@ -195,36 +204,48 @@ function GestionProveedores() {
                         name="rutProveedor"
                         value={proveedorActual.rutProveedor}
                         onChange={handleChange}
+                        error={!!erroresCampos.rutProveedor}
+                        helperText={erroresCampos.rutProveedor}
                     />
                     <TextField
                         label="DV"
                         name="dvProveedor"
                         value={proveedorActual.dvProveedor}
                         onChange={handleChange}
+                        error={!!erroresCampos.dvProveedor}
+                        helperText={erroresCampos.dvProveedor}
                     />
                     <TextField
                         label="Nombre"
                         name="nombreProveedor"
                         value={proveedorActual.nombreProveedor}
                         onChange={handleChange}
+                        error={!!erroresCampos.nombreProveedor}
+                        helperText={erroresCampos.nombreProveedor}
                     />
                     <TextField
                         label="Teléfono"
                         name="telefonoProveedor"
                         value={proveedorActual.telefonoProveedor}
                         onChange={handleChange}
+                        error={!!erroresCampos.telefonoProveedor}
+                        helperText={erroresCampos.telefonoProveedor}
                     />
                     <TextField
                         label="Email"
                         name="emailProveedor"
                         value={proveedorActual.emailProveedor}
                         onChange={handleChange}
+                        error={!!erroresCampos.emailProveedor}
+                        helperText={erroresCampos.emailProveedor}
                     />
                     <TextField
                         label="Dirección"
                         name="direccionProveedor"
                         value={proveedorActual.direccionProveedor}
                         onChange={handleChange}
+                        error={!!erroresCampos.direccionProveedor}
+                        helperText={erroresCampos.direccionProveedor}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -235,12 +256,11 @@ function GestionProveedores() {
                 </DialogActions>
             </Dialog>
 
-            {/* Diálogo de confirmación de eliminación */}
             <Dialog open={openConfirmDelete} onClose={handleCancelDelete}>
                 <DialogTitle>Confirmar eliminación</DialogTitle>
                 <DialogContent>
                     <Typography>
-                        ¿Está seguro que desea eliminar el proveedor{" "}
+                        ¿Está seguro que desea eliminar el proveedor {" "}
                         <strong>{proveedorAEliminar?.nombreProveedor}</strong>?
                     </Typography>
                 </DialogContent>
@@ -256,33 +276,6 @@ function GestionProveedores() {
                 </DialogActions>
             </Dialog>
 
-            {/* Diálogo de error */}
-            <Dialog
-                open={openError}
-                onClose={() => setOpenError(false)}
-                maxWidth="xs"
-                fullWidth
-            >
-                <DialogTitle>Error</DialogTitle>
-                <DialogContent>
-                    <Typography color="error">
-                        {errorMsg.includes("foreign key constraint fails")
-                            ? "No se puede eliminar el proveedor porque está asociado a uno o más productos y/o lotes."
-                            : errorMsg}
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={() => setOpenError(false)}
-                        variant="contained"
-                        color="primary"
-                    >
-                        Cerrar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            {/* Diálogo de éxito al agregar */}
             <Dialog
                 open={openSuccessAdd}
                 onClose={() => setOpenSuccessAdd(false)}
@@ -306,7 +299,6 @@ function GestionProveedores() {
                 </DialogActions>
             </Dialog>
 
-            {/* Diálogo de éxito al editar */}
             <Dialog
                 open={openSuccessEdit}
                 onClose={() => setOpenSuccessEdit(false)}
