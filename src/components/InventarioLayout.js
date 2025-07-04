@@ -71,7 +71,6 @@ function InventarioLayout() {
           <Typography variant="h6" noWrap component="div">
             Inventario Barlacteo
           </Typography>
-          
         </Toolbar>
         <Divider />
         <List >
@@ -136,7 +135,7 @@ function InventarioLayout() {
                   selected={isActive('/inventario/agregar')}
                   sx={{ pl: 4 }}
                 >
-                  <ListItemText primary="Registrar Producto" /> {/* Cambiado aquí */}
+                  <ListItemText primary="Registrar Producto" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -162,7 +161,7 @@ function InventarioLayout() {
             </List>
           </Collapse>
 
-
+          {/* 
           <ListItem disablePadding>
             <ListItemButton onClick={handleLoteClick}>
               <img
@@ -201,6 +200,7 @@ function InventarioLayout() {
               </ListItem>
             </List>
           </Collapse>
+          */}
 
           <ListItem disablePadding>
             <ListItemButton
@@ -216,14 +216,8 @@ function InventarioLayout() {
                 style={{ marginRight: 5, verticalAlign: 'middle' }}
               />
               <ListItemText primary="Movimientos" />
-              
             </ListItemButton>      
           </ListItem>
-
-
-
-
-          
         </List>
         <Divider sx={{ my: 2 }} />
         <Box sx={{ p: 2 }}>

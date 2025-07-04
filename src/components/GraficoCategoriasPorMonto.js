@@ -50,7 +50,7 @@ function GraficoCategoriasPorMonto() {
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Categorías Más Populares por Monto de Venta
+        Categorías Más Populares por Monto de Venta en los últimos 30 días
       </Typography>
       <Box sx={{ width: '100%', height: 350 }}>
         <ResponsiveContainer>

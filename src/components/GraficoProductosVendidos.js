@@ -40,7 +40,7 @@ function GraficoProductosVendidos() {
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Más Vendidos por Ingreso Total
+        Más Vendidos por Ingreso Total en los últimos 30 días
       </Typography>
       <ResponsiveContainer width="100%" height={350}>
         <BarChart data={data} 
