@@ -9,11 +9,24 @@ function GraficoProductosPorUnidades() {
   useEffect(() => {
     axiosInstance.get('/movimiento/ventas/detalle-ultimomes')
       .then((response) => {
-        // Ordena por unidadesVendidas descendente y toma los 5 primeros
-        const top5 = [...response.data]
+        // Agrupa por nombreProducto y suma unidadesVendidas
+        const agrupado = {};
+        if (Array.isArray(response.data)) {
+          response.data.forEach(item => {
+            const nombre = item.nombreProducto;
+            agrupado[nombre] = (agrupado[nombre] || 0) + (item.unidadesVendidas || 0);
+          });
+        }
+        // Convierte a array de objetos
+        const productos = Object.entries(agrupado).map(([nombreProducto, unidadesVendidas]) => ({
+          nombreProducto,
+          unidadesVendidas
+        }));
+        // Ordena por unidadesVendidas descendente y toma los 10 primeros
+        const top10 = productos
           .sort((a, b) => b.unidadesVendidas - a.unidadesVendidas)
-          .slice(0, 5);
-        setData(top5);
+          .slice(0, 10);
+        setData(top10);
       })
       .catch((error) => console.error('Error al obtener datos de ventas:', error));
   }, []);
@@ -36,7 +49,7 @@ function GraficoProductosPorUnidades() {
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Más Vendidos por Unidades
+        Más Vendidos por Unidades los últimos 30 días
       </Typography>
       <ResponsiveContainer width="100%" height={350}>
         <BarChart
