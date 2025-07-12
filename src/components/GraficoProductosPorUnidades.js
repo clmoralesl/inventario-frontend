@@ -49,7 +49,7 @@ function GraficoProductosPorUnidades() {
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Más Vendidos por Unidades los últimos 30 días
+        Más vendidos por unidades los últimos 30 días
       </Typography>
       <ResponsiveContainer width="100%" height={350}>
         <BarChart

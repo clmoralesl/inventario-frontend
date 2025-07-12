@@ -11,6 +11,7 @@ function ListadoProductos() {
   const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchCodigoBarra, setSearchCodigoBarra] = useState(''); // Nuevo estado
   const [selectedCategory, setSelectedCategory] = useState('');
   const [expanded, setExpanded] = useState(null); // Para controlar qué producto está expandido
   const [lotesPorProducto, setLotesPorProducto] = useState({}); // {codigoBarra: [lotes]}
@@ -64,6 +65,10 @@ function ListadoProductos() {
     setSearchQuery(event.target.value);
     setPage(0);
   };
+  const handleSearchCodigoBarraChange = (event) => {
+    setSearchCodigoBarra(event.target.value);
+    setPage(0);
+  };
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
     setPage(0);
@@ -71,8 +76,11 @@ function ListadoProductos() {
 
   const filteredProductos = productos.filter((producto) => {
     const matchesSearch = producto.nombreProducto.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCodigoBarra =
+      searchCodigoBarra === '' ||
+      String(producto.codBarra).includes(searchCodigoBarra);
     const matchesCategory = selectedCategory === '' || producto.categoria === selectedCategory;
-    return matchesSearch && matchesCategory;
+    return matchesSearch && matchesCodigoBarra && matchesCategory;
   });
 
   const paginatedProductos = filteredProductos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -82,12 +90,21 @@ function ListadoProductos() {
       <Typography variant="h4" gutterBottom>Listado de Productos</Typography>
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         <TextField
+          label="Buscar por código de barra"
+          variant="outlined"
+          value={searchCodigoBarra}
+          onChange={handleSearchCodigoBarraChange}
+          sx={{ width: 250 }}
+          type="number"
+        />
+        <TextField
           label="Buscar por nombre"
           variant="outlined"
           value={searchQuery}
           onChange={handleSearchChange}
           sx={{ flexGrow: 1 }}
         />
+        
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="category-select-label">Categoría</InputLabel>
           <Select

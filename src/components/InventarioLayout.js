@@ -22,6 +22,8 @@ import tag from '../assets/tag.png';
 import logo from '../assets/Logo2.png';
 import cajaLote from '../assets/lotePNG.png';
 import HomeIcon from '@mui/icons-material/Home';
+import iconoProveedor from "../assets/IconoProveedores.webp";
+import iconoVenta from "../assets/sales.png";
 
 const drawerWidth = 270;
 
@@ -138,6 +140,7 @@ function InventarioLayout() {
                   <ListItemText primary="Registrar Producto" />
                 </ListItemButton>
               </ListItem>
+              
               <ListItem disablePadding>
                 <ListItemButton
                   component={Link}
@@ -148,6 +151,16 @@ function InventarioLayout() {
                   <ListItemText primary="Productos Registrados" />
                 </ListItemButton>
               </ListItem>
+              <ListItem disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    to="/inventario/lotes/registrarLote"
+                    selected={isActive("/inventario/lotes/registrarLote")}
+                    sx={{ pl: 4 }}
+                  >
+                    <ListItemText primary="Ingreso de stock" />
+                  </ListItemButton>
+                </ListItem>
               <ListItem disablePadding>
                 <ListItemButton
                   component={Link}
@@ -160,48 +173,6 @@ function InventarioLayout() {
               </ListItem>
             </List>
           </Collapse>
-
-          {/* 
-          <ListItem disablePadding>
-            <ListItemButton onClick={handleLoteClick}>
-              <img
-                src={cajaLote}
-                alt="Lotes"
-                width={24}
-                height={24}
-                style={{ marginRight: 8, verticalAlign: 'middle' }}
-              />
-              <ListItemText primary="Lotes" />
-              {openLote ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-          </ListItem>
-
-          <Collapse in={openLote} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem disablePadding>
-                <ListItemButton
-                  component={Link}
-                  to="/inventario/lotes"
-                  selected={isActive('/inventario/lotes')}
-                  sx={{ pl: 4 }}
-                >
-                  <ListItemText primary="Listar Lotes" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
-                  component={Link}
-                  to="/inventario/lotes/agregar"
-                  selected={isActive('/inventario/lotes/agregar')}
-                  sx={{ pl: 4 }}
-                >
-                  <ListItemText primary="Agregar Lote" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Collapse>
-          */}
-
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
@@ -218,6 +189,42 @@ function InventarioLayout() {
               <ListItemText primary="Movimientos" />
             </ListItemButton>      
           </ListItem>
+           <ListItem disablePadding>
+              <ListItemButton
+                component={Link}
+                to="/inventario/proveedores"
+                selected={isActive("/inventario/proveedores")}
+              >
+                <img
+                  src={iconoProveedor}
+                  alt="Proveedores"
+                  width={24}
+                  height={24}
+                  style={{ marginRight: 8 }}
+                />
+                <ListItemText primary="Proveedores" />
+              </ListItemButton>
+              
+            </ListItem>
+            <ListItem disablePadding>
+            <ListItemButton
+                component={Link}
+                to="/inventario/ventas/detalle"
+                selected={isActive("/inventario/ventas/detalle")}
+              >
+                <img
+                  src={iconoVenta}
+                  alt="Proveedores"
+                  width={24}
+                  height={24}
+                  style={{ marginRight: 8 }}
+                />
+                <ListItemText primary="Detalle de ventas" />
+              </ListItemButton>
+            </ListItem>
+            
+
+
         </List>
         <Divider sx={{ my: 2 }} />
         <Box sx={{ p: 2 }}>

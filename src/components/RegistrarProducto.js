@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, TextField, Button, Box, FormControl, Select, MenuItem, Stack } from '@mui/material';
+import { Typography, TextField, Button, Box, FormControl, Select, MenuItem, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import axiosInstance from './axiosInstance';
 
 function RegistrarProducto() {
@@ -13,6 +13,10 @@ function RegistrarProducto() {
     categoria: { idCategoria: '' },
   });
   const [errors, setErrors] = useState({});
+  const [generalError, setGeneralError] = useState(""); // Añade este estado
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
+  const [errorDialogMsg, setErrorDialogMsg] = useState("");
+  const [validationErrors, setValidationErrors] = useState([]); // <-- Nuevo estado
 
   useEffect(() => {
     axiosInstance
@@ -38,6 +42,8 @@ function RegistrarProducto() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setGeneralError("");
+    setValidationErrors([]);
     axiosInstance
       .post('/producto/registrar', formData)
       .then(() => {
@@ -53,9 +59,23 @@ function RegistrarProducto() {
         alert('Producto registrado correctamente');
       })
       .catch((error) => {
-        if (error.response && error.response.status === 400) {
+        // Manejo de error 500 con mensaje en error.response.data
+        if (error.response && error.response.status === 500 && typeof error.response.data === "string") {
+          setErrorDialogMsg(error.response.data);
+          setOpenErrorDialog(true);
+        } else if (error.response && error.response.status === 400) {
           setErrors(error.response.data);
+          // Si es un objeto de errores de validación, lo mostramos en el Dialog
+          if (typeof error.response.data === "object" && error.response.data !== null) {
+            setValidationErrors(Object.values(error.response.data));
+            setOpenErrorDialog(true);
+          } else if (typeof error.response.data === "string") {
+            setGeneralError(error.response.data);
+          }
+        } else if (error.response && error.response.data && error.response.data.message) {
+          setGeneralError(error.response.data.message);
         } else {
+          setGeneralError("Error inesperado al registrar producto.");
           console.error('Error al registrar producto:', error);
         }
       });
@@ -64,6 +84,11 @@ function RegistrarProducto() {
   return (
     <>
       <Typography variant="h4" gutterBottom>Registrar Producto</Typography>
+      {generalError && (
+        <Box sx={{ mb: 2 }}>
+          <Typography color="error" variant="body1">{generalError}</Typography>
+        </Box>
+      )}
       <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4, maxWidth: 600 }}>
         <Stack spacing={2}>
           <Stack direction="row" alignItems="center" spacing={2}>
@@ -160,6 +185,29 @@ function RegistrarProducto() {
           </Box>
         </Stack>
       </Box>
+
+      {/* Dialog de error */}
+      <Dialog open={openErrorDialog} onClose={() => setOpenErrorDialog(false)}>
+        <DialogTitle>Error al registrar producto</DialogTitle>
+        <DialogContent>
+          {validationErrors.length > 0 ? (
+            <Box>
+              {validationErrors.map((msg, idx) => (
+                <Typography color="error" key={idx} sx={{ mb: 1 }}>
+                  {msg}
+                </Typography>
+              ))}
+            </Box>
+          ) : (
+            <Typography color="error">{errorDialogMsg}</Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenErrorDialog(false)} color="primary" variant="contained">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

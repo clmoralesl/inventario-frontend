@@ -48,7 +48,7 @@ function WidgetIngresoDia() {
       </Box>
       <Box sx={{ flex: 1 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-          Ingresos del Día
+          Ingresos del día
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1 }}>
           {ingreso !== null
@@ -182,7 +182,7 @@ function WidgetTop10PopularesBajoStock() {
       </Box>
       <Box sx={{ flex: 1 }}>
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          Productos Populares con Bajo Stock
+          Productos populares con bajo Stock
         </Typography>
         <Typography variant="h4" sx={{ fontWeight: 'bold', mt: 1 }}>
           {loading ? <CircularProgress size={28} color="inherit" /> : popularesBajoStock}
@@ -196,7 +196,7 @@ function Inicio() {
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h3" align="center" gutterBottom>
-        Bienvenido al Inventario Barlacteo
+        Bienvenido al inventario Barlacteo
       </Typography>
       <Box sx={{ height: 50 }} />
       <Box sx={{ display: 'flex', gap: 5, maxWidth: 1200, mx: 'auto', width: '100%', mb: 2 }}>

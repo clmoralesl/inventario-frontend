@@ -21,13 +21,23 @@ const parseFecha = (fechaTexto) => {
 
 const columns = [
   { id: 'idMovimiento', label: 'ID' },
-  { id: 'fechaMovimiento', label: 'Fecha' },
+  { 
+    id: 'fechaMovimiento', 
+    label: 'Fecha',
+    getValue: mov => {
+      // Convierte "dd-MM-yyyy HH:mm:ss" a Date
+      if (!mov.fechaMovimiento) return null;
+      const [fecha, hora] = mov.fechaMovimiento.split(' ');
+      const [dia, mes, anio] = fecha.split('-');
+      return new Date(`${anio}-${mes}-${dia}T${hora || '00:00:00'}`);
+    }
+  },
   { id: 'tipoMovimiento', label: 'Tipo', getValue: mov => mov.tipoMovimiento?.descripcionTipoMovimiento, filterKey: 'tipoMovimiento.descripcionTipoMovimiento' },
   { id: 'producto', label: 'Producto', getValue: mov => mov.producto?.nombreProducto, filterKey: 'producto.nombreProducto' },
   { id: 'unidades', label: 'Unidades' },
   { id: 'lote', label: 'Lote', getValue: mov => mov.lote?.numeroLote },
   { id: 'proveedor', label: 'Proveedor', getValue: mov => mov.lote?.proveedor?.nombreProveedor, filterKey: 'lote.proveedor.nombreProveedor' },
-  { id: 'idUsuario', label: 'ID Usuario' },
+  { id: 'motivo', label: 'Motivo' }, // <-- Añadido
 ];
 
 function descendingComparator(a, b, orderBy, getValue) {
@@ -238,7 +248,7 @@ function Movimientos() {
                   <TableCell>{mov.unidades}</TableCell>
                   <TableCell>{mov.lote?.numeroLote}</TableCell>
                   <TableCell>{mov.lote?.proveedor?.nombreProveedor}</TableCell>
-                  <TableCell>{mov.idUsuario}</TableCell>
+                  <TableCell>{mov.motivo}</TableCell> {/* <-- Añadido */}
                 </TableRow>
               ))
             ) : (

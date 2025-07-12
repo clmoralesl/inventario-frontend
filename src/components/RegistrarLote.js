@@ -4,7 +4,6 @@ import {
     Button,
     MenuItem,
     TextField,
-    Typography,
     Stack,
     FormControl,
     Select,
@@ -13,6 +12,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Typography,
 } from "@mui/material";
 import axiosInstance from "./axiosInstance";
 
@@ -25,9 +25,12 @@ function RegistrarLote() {
         stockLote: "",
         fechaVencimiento: "",
         idProveedor: "",
+        ordenCompra: "", // <-- Añadido
     });
     const [errors, setErrors] = useState({});
     const [openSuccess, setOpenSuccess] = useState(false);
+    const [openError, setOpenError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
         axiosInstance
@@ -63,6 +66,8 @@ function RegistrarLote() {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
+            setErrorMsg("Error en el ingreso de stock. Verifique los campos obligatorios e intente nuevamente.");
+            setOpenError(true);
             return;
         }
 
@@ -78,6 +83,7 @@ function RegistrarLote() {
             proveedor: {
                 id: parseInt(formData.idProveedor),
             },
+            ...(formData.ordenCompra && { ordenCompra: formData.ordenCompra }), // <-- Solo si se ingresa
         };
 
         axiosInstance
@@ -90,9 +96,14 @@ function RegistrarLote() {
                     stockLote: "",
                     fechaVencimiento: "",
                     idProveedor: "",
+                    ordenCompra: "", // <-- Reiniciar también
                 });
             })
             .catch((error) => {
+                setErrorMsg(
+                    "Error en el ingreso de stock. Verifique los campos y que el lote no esté duplicado. Si el problema persiste, contacte al administrador."
+                );
+                setOpenError(true);
                 if (error.response && error.response.status === 400) {
                     setErrors(error.response.data);
                 } else {
@@ -108,7 +119,7 @@ function RegistrarLote() {
     return (
         <>
             <Typography variant="h5" gutterBottom>
-                Registrar Lote
+                Ingresar stock de producto
             </Typography>
             <Box
                 component="form"
@@ -120,21 +131,57 @@ function RegistrarLote() {
                 }}
             >
                 <Stack spacing={2}>
-                    {/* Código de Barra */}
+                    {/* Código de Barras manual */}
+                    <TextField
+                        fullWidth
+                        name="codigoBarraManual"
+                        label="Código de Barras"
+                        value={formData.codigoBarra}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData((prev) => ({
+                                ...prev,
+                                codigoBarra: value,
+                            }));
+                            // Si coincide con un producto, selecciona en el select
+                            const prod = productos.find(
+                                (p) => String(p.codigoBarra) === value
+                            );
+                            if (prod) {
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    codigoBarra: value,
+                                }));
+                            }
+                        }}
+                        error={!!errors.codigoBarra}
+                        helperText={errors.codigoBarra}
+                        size="small"
+                        type="text"
+                        placeholder="Escanee o escriba el código de barras"
+                    />
+
+                    {/* Selección de Producto */}
                     <FormControl fullWidth size="small" error={!!errors.codigoBarra}>
-                        <InputLabel>Código de Barra</InputLabel>
+                        <InputLabel>Producto a ingresar</InputLabel>
                         <Select
                             name="codigoBarra"
                             value={formData.codigoBarra}
                             label="Código de Barra"
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    codigoBarra: value,
+                                }));
+                            }}
                         >
                             <MenuItem value="">
                                 <em>Seleccione un producto</em>
                             </MenuItem>
                             {productos.map((prod) => (
                                 <MenuItem key={prod.codigoBarra} value={prod.codigoBarra}>
-                                    {prod.codigoBarra} - {prod.nombreProducto}
+                                     {prod.nombreProducto}
                                 </MenuItem>
                             ))}
                         </Select>
@@ -161,7 +208,7 @@ function RegistrarLote() {
                     <TextField
                         fullWidth
                         name="stockLote"
-                        label="Stock del Lote"
+                        label="Stock"
                         type="number"
                         value={formData.stockLote}
                         onChange={handleChange}
@@ -214,6 +261,17 @@ function RegistrarLote() {
                             </Typography>
                         )}
                     </FormControl>
+
+                    {/* Orden de Compra (opcional) */}
+                    <TextField
+                        fullWidth
+                        name="ordenCompra"
+                        label="Orden de Compra (opcional)"
+                        value={formData.ordenCompra}
+                        onChange={handleChange}
+                        size="small"
+                        placeholder="Ingrese el número o código de la orden de compra"
+                    />
                 </Stack>
 
                 {/* Botón en la esquina inferior derecha */}
@@ -238,6 +296,19 @@ function RegistrarLote() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseSuccess} variant="contained" color="primary">
+                        Cerrar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Diálogo de error */}
+            <Dialog open={openError} onClose={() => setOpenError(false)} maxWidth="xs" fullWidth>
+                <DialogTitle>Error en el ingreso de stock</DialogTitle>
+                <DialogContent>
+                    <Typography color="error">{errorMsg}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenError(false)} variant="contained" color="primary">
                         Cerrar
                     </Button>
                 </DialogActions>
